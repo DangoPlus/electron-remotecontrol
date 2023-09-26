@@ -41,13 +41,13 @@ const handleShortCut= () => {
     })
     request.setHeader('Content-Type', 'application/json');
     request.on('response', (response) => {
-      console.log(`STATUS: ${response.statusCode}`)
-      console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
+      // console.log(`STATUS: ${response.statusCode}`)
+      // console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
       response.on('data', (chunk) => {
-        console.log(`BODY: ${chunk}`)
+        // console.log(`BODY: ${chunk}`)
       })
       response.on('end', () => {
-        console.log('No more data in response.')
+        // console.log('No more data in response.')
       })
     })
     request.write(body, 'utf-8');
@@ -64,15 +64,16 @@ const handleShortCut= () => {
       method: "PUT",
       url: `${APIURL}/masters/change_status/emergency_control`
     })
+    // console.log(request)
     request.setHeader('Content-Type', 'application/json');
     request.on('response', (response) => {
-      console.log(`STATUS: ${response.statusCode}`)
-      console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
+      // console.log(`STATUS: ${response.statusCode}`)
+      // console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
       response.on('data', (chunk) => {
-        console.log(`BODY: ${chunk}`)
+        // console.log(`BODY: ${chunk}`)
       })
       response.on('end', () => {
-        console.log('No more data in response.')
+        // console.log('No more data in response.')
       })
     })
     request.write(body, 'utf-8');
