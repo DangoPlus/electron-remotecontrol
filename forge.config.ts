@@ -37,8 +37,8 @@ const config: ForgeConfig = {
       name: '@electron-forge/publisher-github',
       config: {
         repository: {
-          owner: 'delimitertech',
-          name: 'electron-starter'
+          owner: 'DangoPlus',
+          name: 'electron-remotecontrol'
         },
         prerelease: true
       }
