@@ -1,5 +1,6 @@
-import { app, BrowserWindow } from 'electron';
+import { app, net, BrowserWindow, globalShortcut } from 'electron';
 import path from 'path';
+import { APIURL } from './utils/config';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -26,12 +27,75 @@ const createWindow = () => {
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
-
+const handleShortCut= () => {
+  const ret = globalShortcut.register('PageUp', () => {
+    console.log('PageUp is pressed', Math.random())
+    const body = JSON.stringify({
+      "id": 2,
+      "name": "emergency",
+      "status": "pass"
+    });
+    const request = net.request({
+      method: "PUT",
+      url: `${APIURL}/masters/change_status/emergency_control`
+    })
+    request.setHeader('Content-Type', 'application/json');
+    request.on('response', (response) => {
+      console.log(`STATUS: ${response.statusCode}`)
+      console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
+      response.on('data', (chunk) => {
+        console.log(`BODY: ${chunk}`)
+      })
+      response.on('end', () => {
+        console.log('No more data in response.')
+      })
+    })
+    request.write(body, 'utf-8');
+    request.end()
+  })
+  const ret2 = globalShortcut.register('PageDown', () => {
+    console.log('PageDown is pressed', Math.random())
+    const body = JSON.stringify({
+      "id": 2,
+      "name": "emergency",
+      "status": "block"
+    });
+    const request = net.request({
+      method: "PUT",
+      url: `${APIURL}/masters/change_status/emergency_control`
+    })
+    request.setHeader('Content-Type', 'application/json');
+    request.on('response', (response) => {
+      console.log(`STATUS: ${response.statusCode}`)
+      console.log(`HEADERS: ${JSON.stringify(response.headers)}`)
+      response.on('data', (chunk) => {
+        console.log(`BODY: ${chunk}`)
+      })
+      response.on('end', () => {
+        console.log('No more data in response.')
+      })
+    })
+    request.write(body, 'utf-8');
+    request.end()
+  })
+  if (!ret && !ret2) {
+    console.log('registration failed')
+  }
+}
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', ()=>{
+  createWindow();
+  handleShortCut();
+});
+app.on('will-quit', () => {
+  // Unregister a shortcut.
+  // globalShortcut.unregister('CommandOrControl+X')
 
+  // Unregister all shortcuts.
+  globalShortcut.unregisterAll()
+})
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.

@@ -5,3 +5,13 @@ body {
   max-width: 38rem;
   padding: 2rem;
 }
+#status{
+  color: black;
+  width: 100px;
+  height: 100px;
+}
+#fetchButton{
+  width: 100px;
+  height: 50px;
+  color: blue;
+}

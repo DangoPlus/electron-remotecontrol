@@ -1,0 +1,1 @@
+export const APIURL= "https://ciie-api.dentsunext.digital";
