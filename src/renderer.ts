@@ -32,8 +32,21 @@ import { APIURL } from './utils/config';
 console.log('👋 This message is being logged by "renderer.ts", included via Vite');
 
 
-document.getElementById('fetchButton').addEventListener('click', fetchData);
+document.getElementById('startFetch').addEventListener('click', startFetch);
+document.getElementById('stopFetch').addEventListener('click', stopFetch);
 
+document.getElementById('masterPassButton').addEventListener('click', ()=>{
+    masterControl('pass')
+});
+document.getElementById('masterBlockButton').addEventListener('click', ()=>{
+    masterControl('block')
+});
+document.getElementById('emergencyPassButton').addEventListener('click', ()=>{
+    emergencyControl('pass')
+});
+document.getElementById('emergencyBlockButton').addEventListener('click', ()=>{
+    emergencyControl('block')
+});
 function fetchData() {
 const requestOptions = {
     method: 'GET',
@@ -48,5 +61,54 @@ fetch(`${APIURL}/masters`, requestOptions)
     .catch(error => console.log('error', error));
 }
 
+function masterControl(status: string) {
+    const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
 
-// setInterval(fetchData,500);
+
+const raw = JSON.stringify({
+   "id": 1,
+   "name": "master",
+   "status": status
+});
+
+const requestOptions = {
+   method: 'PUT',
+   headers: myHeaders,
+   body: raw,
+};
+
+fetch("http://ask-api.dentsunext.digital:3033/masters/change_status/master_control", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+}
+function emergencyControl(status: string) {
+    const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
+
+const raw = JSON.stringify({
+   "id": 2,
+   "name": "emergency",
+   "status": status
+});
+
+const requestOptions = {
+   method: 'PUT',
+   headers: myHeaders,
+   body: raw,
+};
+
+fetch("http://ask-api.dentsunext.digital:3033/masters/change_status/emergency_control", requestOptions)
+   .then(response => response.text())
+   .then(result => console.log(result))
+   .catch(error => console.log('error', error));
+}
+let fetchInterval: string | number | NodeJS.Timeout;
+function startFetch() {
+    fetchInterval = setInterval(fetchData,500);
+}
+function stopFetch() {
+    clearInterval(fetchInterval)
+    }
