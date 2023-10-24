@@ -1,1 +1,1 @@
-export const APIURL= "http://ask-api.dentsunext.digital:3033";
+export const APIURL= "https://lucie-api.isidsh.com";
